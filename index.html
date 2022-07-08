@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            /* background: pink; */
+            height: 400px;
+            width: 300px;
+        }
+        body{
+            margin: 0;
+        }
+        input{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>MEME GENERATOR</h1>
+    <h3>ENTER TEXT</h3>
+    <input type="text" id="up" >
+    <br>
+    <input type="text" id="down">
+    <br>
+    <input type="file" id="image">
+    <canvas></canvas>
+    <!-- <input type="click"> -->
+    <script>
+        var canvas = document.querySelector('canvas');
+        var up = document.querySelector("#up");
+        var down = document.querySelector("#down");
+        var image = document.querySelector("#image");
+        
+        let img;
+
+        image.addEventListener("change" , () =>{
+            const url=URL.createObjectURL(image.files[0]);
+            img= new Image();
+            img.src=url;
+            img.addEventListener("load", ()=>{
+                update(canvas,up.value,down.value,image);
+            },{once:true });
+        });
+        function update(canvas,up,down,image)
+        {
+            var ctx = canvas.getContext("2d");
+            canvas.width=img.width;
+            canvas.height=img.height;
+            ctx.drawImage(img,0,0);
+            const width = img.width;
+             const height = img.height;
+            const fontSize = Math.floor(width / 10);
+            const yOffset = height / 25;
+            
+            // ctx.fillText(down , canvas.width/1.2, canvas.height/1.5);
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = Math.floor(fontSize / 4);
+            ctx.fillStyle = "white";
+            ctx.textAlign = "center";
+            ctx.lineJoin = "round";
+            ctx.font= `${fontSize}px sans-serif`;
+            
+            ctx.textBaseline = "top";
+            ctx.strokeText(up, width / 2, yOffset);
+            ctx.fillText(up, width / 2, yOffset);
+
+
+            ctx.textBaseline = "bottom";
+            ctx.strokeText(down, width / 2, height - yOffset);
+            ctx.fillText(down , width / 2, height - yOffset);
+
+        }
+        
+       
+        
+        // canvas.width= 800px;
+        // canvas.height= 800px;
+    </script>
+</body>
+</html>
